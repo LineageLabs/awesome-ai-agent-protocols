@@ -20,7 +20,7 @@
 
 *How do humans behind agents prove they're real and unique? Without this layer, Sybil attacks make every other layer fragile.*
 
-- [World ID](https://world.org/world-id) — Iris-biometric proof-of-personhood via the Orb. 18M+ verified users. Highest uniqueness guarantee (FMR 2.25×10⁻¹⁴).
+- [World ID](https://world.org/world-id) — Iris-biometric proof-of-personhood with biometric liveness check. 18M+ verified users, but not available all countries.
 - [Self Protocol](https://self.xyz) — ZK proofs from passports and national IDs. Covers 60+ countries via NFC chip verification (~1B passports globally). First production ERC-8004 implementation.
 - [BrightID](https://brightid.org) — Social-graph-based proof of uniqueness. Decentralised, no biometrics required.
 - [Holonym](https://holonym.id) — Privacy-preserving identity verification using ZK proofs from government IDs. Sybil resistance without biometric hardware.
