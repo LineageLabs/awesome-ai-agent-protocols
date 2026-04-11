@@ -1,142 +1,127 @@
-# Awesome AI Agent Protocols & Verification
+# Awesome AI Agent Protocols [![Awesome](https://awesome.re/badge.svg)](https://awesome.re) [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](https://creativecommons.org/publicdomain/zero/1.0/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/nicoewawe/awesome-ai-agent-protocols/pulls)
 
-> A curated list of AI agent protocols organized around the **Trust Agent Stack**: Provenance, Governance, and Action.
-
-[![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
-
----
-
-## The Trust Agent Stack
-
-Three layers of concern for trustworthy AI agent systems:
-
-1. **Provenance** — *Who is acting?* Identity, origin, and discovery for both the agent and the human/organization behind it.
-2. **Governance** — *What are they allowed to do?* Policy enforcement, access control, security risk management, and the trust signals (reputation, validation, attestation) that inform those decisions.
-3. **Action** — *How do they affect the world?* Communication transports, tool use, and payments — anything that lets an agent produce effects.
-
-Some protocols span multiple layers (for example, A2A provides both an Agent Card for Provenance and a task execution surface for Action). These are cross-listed with full entries in each relevant section.
+> A curated list of protocols, tools, and services powering the AI agent infrastructure stack — identity, discovery, communication, payments, and governance.
 
 ---
 
 ## Contents
 
-- [Provenance](#provenance)
-  - [Human Identity](#human-identity)
-  - [Agent Identity](#agent-identity)
-- [Governance](#governance)
-- [Action](#action)
-  - [Communication / Transport](#communication--transport)
-  - [Tool](#tool)
-  - [Payments](#payments)
-- [Protocol Comparison](#protocol-comparison)
+- [Identity — Proof of Personhood](#-identity--proof-of-personhood)
+- [Agent Identity & Trust](#-agent-identity--trust)
+- [Agent Discovery](#-agent-discovery)
+- [Communication Protocols](#-communication-protocols)
+- [Payments & Commerce](#-payments--commerce)
+- [Governance & Security](#%EF%B8%8F-governance--security)
 - [Contributing](#contributing)
-- [License](#license)
 
 ---
 
-## Provenance
+## 🪪 Identity — Proof of Personhood
 
-Identity, origin, and discovery for the entities that act in agent systems — both the agents themselves and the humans or organizations behind them.
+*How do humans behind agents prove they're real and unique? Without this layer, Sybil attacks make every other layer fragile.*
 
-### Human Identity
-
-Privacy-preserving methods for proving and asserting *human* presence and identity online, enabling humans to be distinguished from (or vouch for) AI agents.
-
-| Protocol / Paper | Authors | Description | Links |
-|------------------|---------|-------------|-------|
-| **World ID** | Tools for Humanity / World Foundation (Worldcoin), v4.0 2025 | Open-source decentralized Proof-of-Human (PoH) protocol that lets people prove they are unique humans without revealing their identity. Uses iris biometrics captured by the purpose-built Orb hardware combined with anonymized multi-party computation (AMPC) and zero-knowledge proofs. World ID v4.0 introduces account abstraction: a World ID becomes a record in the on-chain `WorldIDRegistry` with multiple authorized keys, supporting multi-device authenticators, key rotation, and recovery. Crucially for agent systems, it supports *agent-on-behalf-of-human* delegation, allowing AI agents to act under a revocable PoH binding while preserving per-human rate limits. | [Whitepaper](https://whitepaper.world.org/) / [Protocol v4.0 Spec](https://github.com/worldcoin/world-id-protocol/blob/main/docs/world-id-4-specs/README.md) / [Developer Docs](https://docs.world.org/world-id) |
-| **Self (Self Pass)** | Self Protocol, 2025 | Privacy-first, open-source identity protocol built on zero-knowledge proofs. Self Pass verifies real-world identity attributes — age, nationality, sanctions status, proof-of-human — from passports, national IDs, Aadhaar, and KYC attestations across 60+ countries, without revealing the underlying personal data. Users verify once with the Self app, then selectively disclose attributes across any application that integrates the protocol. *(See [Provenance › Agent Identity](#agent-identity) for Self Agent ID, which extends this verification to AI agents.)* | [Docs](https://docs.self.xyz/) / [Self Pass](https://docs.self.xyz/self-pass/self-pass) |
-| **Personhood Credentials** | Adler & Hitzig (OpenAI), Jain (Microsoft), et al., 2024 | Proposes privacy-preserving digital credentials proving a bearer is human without revealing identity. Uses zero-knowledge proofs for unlinkable pseudonymity. Analyzes limitations of existing countermeasures (CAPTCHAs, economic barriers, AI detection, biometrics) and addresses sockpuppets, bot attacks, and misleading agents. | [Paper](https://arxiv.org/abs/2408.07892) |
-
-### Agent Identity
-
-Standards for identifying, discovering, and attesting to agent identity across systems and organizations. Includes both the identity surface itself (cards, DIDs, NFTs, certificates) and the discovery mechanisms that resolve agents on the network.
-
-| Protocol | Authors | Description | Links |
-|----------|---------|-------------|-------|
-| **A2A Agent Card** | Google / The Linux Foundation, 2025 | The Agent Card is A2A's identity and capability surface: a structured document describing an agent's name, skills, supported transports, endpoints, and authentication requirements. Clients use it to discover, authenticate, and select counterparties before initiating tasks. *(See [Action › Communication / Transport](#communication--transport) for the full A2A protocol.)* | [Specification (v1.0.0)](https://a2a-protocol.org/latest/specification/) |
-| **ANP Identity (`did:wba`)** | GaoWei Chang / ANP Community, 2024 | ANP's Identity & Secure Communication layer defines `did:wba`, a DID method anchored in web-based authority, paired with ECDHE-based encrypted channels. Provides cryptographic agent identity decoupled from any single central registry. *(See [Action › Communication / Transport](#communication--transport) for the full ANP protocol.)* | [White Paper](https://agent-network-protocol.com/specs/white-paper) |
-| **AITP Identity** | NEAR Foundation, 2025 | AITP anchors agent identity in NEAR-based decentralized accounts, enabling cross-trust-boundary interaction backed by verifiable on-chain accounts. *(See [Action › Communication / Transport](#communication--transport) for the full AITP protocol.)* | [Specification (v0.1.0)](https://aitp.dev/) |
-| **Agent Identity & Discovery (AID)** | Agent Community, 2026 | Minimal, DNS-first bootstrap standard for discovering agent endpoints. Uses DNS TXT records at `_agent.<domain>` with semicolon-delimited key-value pairs. Protocol-agnostic (supports MCP, A2A, OpenAPI tokens). | [Specification (v1.2.0)](https://aid.agentcommunity.org/docs/specification) |
-| **Agent Name Service (ANS)** | Huang (DistributedApps.ai), Narajala (AWS), Habler (Intuit), Sheriff (Cisco), 2025 | DNS-inspired registry for secure agent discovery and lifecycle management. Uses PKI certificates for verifiable identity, a Protocol Adapter Layer supporting A2A/MCP/ACP, and capability-aware resolution. | [Paper](https://arxiv.org/abs/2505.10609) |
-| **ERC-8004 Identity Registry** | De Rossi (MetaMask), Crapis (Ethereum), Ellis (Google), Reppel (Coinbase), 2025 | The Identity Registry component of ERC-8004: an Ethereum standard for trustless agent identity using ERC-721 NFTs to anchor each agent on-chain, providing portable identity across applications. *(See [Governance](#governance) for ERC-8004's reputation and validation registries.)* | [EIP-8004](https://eips.ethereum.org/EIPS/eip-8004) |
-| **Self Agent ID** | Self Protocol, 2026 | On-chain identity registry binding AI agent keys to Self Protocol human proofs. Each agent receives a soulbound ERC-721 NFT backed by a ZK passport verification, providing trustless proof-of-human for autonomous agents. Implements the ERC-8004 Identity Registry with a Proof-of-Human extension, plus matching Reputation and Validation registries. Sybil-resistant via per-human nullifiers; proofs are time-bounded (default one year or document expiry). Deployed on Celo Mainnet/Sepolia with SDKs in TypeScript, Python, and Rust. *(See [Provenance › Human Identity](#human-identity) for Self Pass, the underlying human verification layer.)* | [Overview](https://docs.self.xyz/self-agent-id/overview) / [GitHub](https://github.com/selfxyz/self-agent-id) / [Live App](https://selfagentid.xyz) |
+- [World ID](https://world.org/world-id) — Iris-biometric proof-of-personhood via the Orb. 18M+ verified users. Highest uniqueness guarantee (FMR 2.25×10⁻¹⁴).
+- [Self Protocol](https://self.xyz) — ZK proofs from passports and national IDs. Covers 60+ countries via NFC chip verification (~1B passports globally). First production ERC-8004 implementation.
+- [BrightID](https://brightid.org) — Social-graph-based proof of uniqueness. Decentralised, no biometrics required.
+- [Holonym](https://holonym.id) — Privacy-preserving identity verification using ZK proofs from government IDs. Sybil resistance without biometric hardware.
+- [Humanity Protocol](https://humanityprotocol.com) — Palm-scan biometric proof-of-personhood. Mobile-first, no dedicated hardware.
 
 ---
 
-## Governance
+## 🤖 Agent Identity & Trust
 
-Policy enforcement, access control, security risk management, and the trust signals (reputation, validation, attestation) that inform those decisions. This layer is *what an agent is allowed to do*, and *what evidence we have that it should be allowed*.
+*How do agents prove who they are, who's behind them, and whether they can be trusted?*
 
-| Tool / Framework | Authors | Description | Links |
-|------------------|---------|-------------|-------|
-| **Agent Governance Toolkit** | Microsoft, 2025 | Runtime governance infrastructure for autonomous AI agents. Provides deterministic policy enforcement (<0.1ms latency), Ed25519 cryptographic identity, SPIFFE/SVID zero-trust identity, 4-tier privilege rings with execution sandboxing, and SRE tooling (SLOs, error budgets, chaos engineering). Covers all 10 OWASP Agentic Top 10 risks. Includes an MCP Security Scanner for tool poisoning detection. SDKs for Python, TypeScript, .NET, Rust, and Go. | [GitHub](https://github.com/microsoft/agent-governance-toolkit) |
-| **ERC-8004 Reputation & Validation** | De Rossi (MetaMask), Crapis (Ethereum), Ellis (Google), Reppel (Coinbase), 2025 | The Reputation and Validation Registry components of ERC-8004. Supports tiered trust proportional to value at risk — from reputation systems through stake-secured re-execution, zkML proofs, and TEE attestations. *(See [Provenance › Agent Identity](#agent-identity) for ERC-8004's identity registry.)* | [EIP-8004](https://eips.ethereum.org/EIPS/eip-8004) |
+### Standards & Specifications
 
----
+- [W3C Decentralized Identifiers (DIDs)](https://www.w3.org/TR/did-core/) — The foundation. Globally unique, self-sovereign identifiers controlled by the subject, not a central authority. Multiple DID methods exist (`did:web`, `did:key`, `did:ion`, `did:wba`).
+- [W3C Verifiable Credentials](https://www.w3.org/TR/vc-data-model-2.0/) — Cryptographically signed, tamper-evident, machine-verifiable credentials. The digital equivalent of physical certificates. Trust triangle: Issuer → Holder → Verifier.
+- [ERC-8004](https://eips.ethereum.org/EIPS/eip-8004) — Ethereum standard for on-chain agent identity, reputation, and validation registries. Three registries: identity (NFT-based), reputation (on-chain ratings), validation (capability attestations).
 
-## Action
+### Implementations
 
-Anything that lets an agent affect the world: communication with other agents and services, tool use, and payments.
-
-### Communication / Transport
-
-Standards for how agents exchange information — with each other, with tools, and with users — including the underlying transport substrates (JSON-RPC, gRPC, REST, DIDs, DNS).
-
-| Protocol | Proposer | Description | Links |
-|----------|----------|-------------|-------|
-| **Agent2Agent (A2A)** | Google / The Linux Foundation, 2025 | Open standard for communication between independent AI agent systems. Three-layer design: canonical data model (Protocol Buffers), abstract operations, and protocol bindings (JSON-RPC, gRPC, HTTP/REST). Supports async tasks, streaming, push notifications, and human-in-the-loop workflows. *(See [Provenance › Agent Identity](#agent-identity) for the Agent Card identity surface.)* | [Specification (v1.0.0)](https://a2a-protocol.org/latest/specification/) |
-| **Agent Network Protocol (ANP)** | GaoWei Chang / ANP Community, 2024 | Open-source protocol for secure, decentralized agent communication. Three-layer architecture: Identity & Secure Communication, Meta-Protocol (AI-driven protocol negotiation), and Application layer (Agent Description Protocol in JSON-LD). Includes discovery, description, and transaction specifications. *(See [Provenance › Agent Identity](#agent-identity) for `did:wba` identity.)* | [White Paper](https://agent-network-protocol.com/specs/white-paper) |
-| **Agent Interaction & Transaction Protocol (AITP)** | NEAR Foundation, 2025 | Enables agents to communicate securely across trust boundaries. Built on Chat Threads (inspired by OpenAI Threads API) and an extensible Capabilities system for structured interactions. Supports multimodal input, generative UI, payments, and human-in-the-loop. Vision: HTTP/HTML equivalent for agent-to-agent commerce. *(See [Provenance › Agent Identity](#agent-identity) for AITP identity, and [Payments](#payments) for its payment capabilities.)* | [Specification (v0.1.0)](https://aitp.dev/) / [Vision](https://aitp.dev/vision) |
-| **Agent Protocol** | AI Engineer Foundation, 2024 | REST API specification (OpenAPI 3.0) defining a standard control interface for agents. Core abstractions: Tasks (goals), Steps (units of work), and Artifacts (outputs). Supports multipart file upload/download, CORS, and flexible auth (API keys, OAuth 2.0, JWT). | [Specification (v1)](https://agentprotocol.ai/specification/) |
-| **agents.json** | Wild Card AI, 2025 | Open specification that extends OpenAPI to formally describe contracts for LLM-agent interactions. Introduces Flows (multi-step API call sequences) and Links (action stitching). Discoverable at `.well-known/agents.json`. Stateless by design, requiring minimal changes to existing APIs. | [Specification (v0.1.0)](https://github.com/wild-card-ai/agents-json) |
-
-### Tool
-
-Standards for exposing tools, resources, and capabilities to agents so they can invoke them as part of their reasoning.
-
-| Protocol | Proposer | Description | Links |
-|----------|----------|-------------|-------|
-| **Model Context Protocol (MCP)** | Anthropic, 2024 | Standardizes integration between LLM applications and external data sources/tools. Three-component architecture (host, client, server) using JSON-RPC 2.0. Servers expose resources, prompts, and tools; clients provide sampling, roots, and elicitation. Inspired by Language Server Protocol. | [Architecture](https://modelcontextprotocol.io/specification/2025-11-25/architecture) / [Specification](https://modelcontextprotocol.io/specification/2025-11-25) |
-
-### Payments
-
-Protocols enabling agents to send and receive payments as part of their actions in the world. Both protocols listed here repurpose the long-dormant HTTP `402 Payment Required` status code as a payment-challenge surface, but differ in scope: x402 ships a Coinbase-led reference SDK and ecosystem, while MPP is an IETF-track HTTP authentication scheme proposed by Tempo Labs and Stripe.
-
-| Protocol | Authors | Description | Links |
-|----------|---------|-------------|-------|
-| **x402** | Reppel, Caspers, Leffew, Organ, Kim, Dalal (Coinbase), 2025 | Open payment standard that uses HTTP `402 Payment Required` to let AI agents and web services autonomously pay for API access, data, and digital services without API keys, accounts, or subscriptions. V1 (May 2025) shipped single-call exact payments using stablecoins like USDC on Base; V2 (December 2025) added a CAIP-based unified multi-chain payment interface, dynamic `payTo` routing, wallet-based reusable sessions (SIWx), automatic discovery, and a plugin-driven SDK. Now stewarded by the independent x402 Foundation (with Coinbase and Cloudflare). | [V1 Whitepaper](https://www.x402.org/) / [V2 Announcement](https://www.x402.org/writing/x402-v2-launch) / [GitHub](https://github.com/coinbase/x402) |
-| **Machine Payments Protocol (MPP)** | Ryan, Moxey, Meagher (Tempo Labs), Weinstein, Kaliski (Stripe), 2026 | Open protocol for machine-to-machine payments that defines a `Payment` HTTP authentication scheme on top of HTTP `402`, submitted as IETF Internet-Draft `draft-ryan-httpauth-payment-01`. Payment-method agnostic — stablecoins, cards, and bank transfers all flow through one interface — with idempotency, security, and receipts as first-class primitives. Servers issue a `WWW-Authenticate: Payment` challenge; clients reply with `Authorization: Payment` containing a Credential, and successful responses return a `Payment-Receipt`. Reference SDKs maintained by Tempo Labs and Wevm. | [Overview](https://mpp.dev/overview) / [IETF Draft](https://datatracker.ietf.org/doc/draft-ryan-httpauth-payment/) / [paymentauth.org](https://paymentauth.org/) |
+- [Web Bot Auth](https://developers.cloudflare.com/bots/reference/bot-verification/web-bot-auth/) — Cloudflare's cryptographic HTTP message signatures (IETF RFC 9421) for bot/agent identity. Ed25519 keys, `/.well-known/http-message-signatures-directory`. Production-deployed on the Verified Bots Program. [Rust](https://crates.io/crates/web-bot-auth) and [TypeScript](https://www.npmjs.com/package/web-bot-auth) libraries available.
+- [World AgentKit](https://docs.world.org/agents/agent-kit/integrate) — Extends x402 with proof-of-personhood verification for agents. Agents register on AgentBook (World Chain), verified via World App. Distinguishes human-backed agents from bots. `npm install @worldcoin/agentkit`.
+- [ANP Identity Layer](https://github.com/agent-network-protocol/agent-network-protocol) — Agent Network Protocol uses `did:wba` (DID method anchored to web domains). Decentralised agent identity without blockchain.
 
 ---
 
-## Protocol Comparison
+## 🔍 Agent Discovery
 
-| Protocol | Layer(s) | Type | Transport | Identity | Discovery | Trust Model |
-|----------|----------|------|-----------|----------|-----------|-------------|
-| Personhood Credentials | Provenance | Human identity | Cryptographic / ZK | Issuer-anchored | N/A | Issuer + ZK-proof |
-| World ID | Provenance | Human identity (PoH) | On-chain `WorldIDRegistry` + ZKP | Iris biometric via Orb, multi-key authenticators | Authenticator-mediated | AMPC + ZK uniqueness proof |
-| Self (Self Pass) | Provenance | Human identity | ZK proofs / Self app | Government ID / passport-backed | Self app | Selective ZK attribute disclosure |
-| Self Agent ID | Provenance + Governance | Agent identity (PoH-bound) | Soulbound ERC-721 on Celo | Self human-PoH binding | On-chain registry | ERC-8004 + Proof-of-Human extension |
-| A2A | Provenance + Action | Inter-agent | JSON-RPC, gRPC, REST | Agent Cards | Agent Cards / OpenAPI | Enterprise auth |
-| ANP | Provenance + Action | Inter-agent | HTTP, DID-based | `did:wba` + ECDHE | `.well-known` + search services | Zero-trust, multi-DID |
-| AITP | Provenance + Action | Inter-agent | HTTP | NEAR identity | Registry / intent resolution | Trust boundaries + capabilities |
-| AID | Provenance | Discovery | DNS TXT | Ed25519 public key | DNS-first (`_agent.`) | Auth hints (PAT, OAuth, mTLS, JWT) |
-| ANS | Provenance | Discovery / Registry | HTTP | PKI certificates, DID | DNS-inspired registry | Certificate-based |
-| ERC-8004 | Provenance + Governance | Trust / Identity | Ethereum | ERC-721 NFT | On-chain registry | Tiered (reputation, stake, zkML, TEE) |
-| Agent Governance Toolkit | Governance | Runtime governance | In-process / SDK | Ed25519, SPIFFE/SVID | N/A | Policy + cryptographic identity |
-| MCP | Action (Tool) | Context-oriented | JSON-RPC 2.0, HTTP | Host-managed | Capability negotiation | User consent |
-| agents.json | Action (Comm) | API bridge | HTTP (OpenAPI) | Service-level | `.well-known/agents.json` | API auth (keys, OAuth, Bearer) |
-| Agent Protocol | Action (Comm) | Execution | REST (OpenAPI 3.0) | Implementation-defined | N/A | API keys, OAuth 2.0, JWT |
-| x402 | Action (Payments) | M2M payment | HTTP 402 + headers | Wallet-based (SIWx, CAIP-122) | V2 Discovery extension | Onchain settlement (multi-chain) |
-| MPP | Action (Payments) | M2M payment | HTTP 402 + `Payment` auth scheme | Payment-method credentials | N/A | Method-agnostic (stablecoin, card, bank) |
+*How do agents find each other and advertise their capabilities?*
+
+- [A2A Agent Cards](https://google.github.io/A2A/) — JSON metadata at `/.well-known/agent-card.json`. Agents self-describe capabilities, authentication requirements, and supported protocols. Part of the A2A specification.
+- [AID — Agent Identity & Discovery](https://github.com/agent-community/agent-id) — Radically minimal DNS TXT record-based bootstrap. Agents publish identity and endpoint info via DNS. Protocol-agnostic.
+- [agents.json](https://docs.wild-card.ai/) — Structured API workflow contracts on OpenAPI. Agents publish capability manifests at `/.well-known/agents.json`. Stateless, HTTP-native.
+- [ANP Agent Description Protocol](https://github.com/agent-network-protocol/agent-network-protocol) — Active and passive agent discovery using JSON-LD. Part of the ANP full-stack protocol.
+- [ERC-8004 Registry](https://eips.ethereum.org/EIPS/eip-8004) — On-chain searchable agent identity registry. Agents register as NFTs with queryable capability metadata.
+
+---
+
+## 💬 Communication Protocols
+
+*How do agents talk to tools, to each other, and to users? Three complementary protocols now define the standard communication stack.*
+
+### The Protocol Triangle
+
+| Layer | Protocol | Purpose |
+|-------|----------|---------|
+| Agent ↔ Tools | **MCP** | Connect agents to external tools, data sources, and APIs |
+| Agent ↔ Agent | **A2A** | Coordinate tasks across distributed agent systems |
+| Agent ↔ User | **AG-UI** | Stream agent state, tool calls, and interactions to frontends |
+
+- [MCP — Model Context Protocol](https://modelcontextprotocol.io/) — Anthropic. The standard way agents connect to external tools and data. Dynamic tool discovery, bi-directional communication, capability negotiation. 26,000+ MCP servers indexed. Donated to the Linux Foundation's Agentic AI Foundation (Dec 2025). [Spec](https://spec.modelcontextprotocol.io/) · [GitHub](https://github.com/modelcontextprotocol)
+- [A2A — Agent2Agent Protocol](https://google.github.io/A2A/) — Google / Linux Foundation. Enterprise agent-to-agent communication. Three interchangeable protocol bindings (JSON-RPC 2.0, gRPC, HTTP+JSON). Task lifecycle management, streaming, push notifications. 150+ supporting organisations. [Spec](https://google.github.io/A2A/specification/) · [GitHub](https://github.com/google/A2A)
+- [AG-UI — Agent–User Interaction Protocol](https://docs.ag-ui.com/) — CopilotKit. Event-based protocol connecting agents to user-facing frontends. 16 standardised event types. Transport-agnostic (SSE, WebSocket, HTTP binary). 1st-party support from Microsoft, Google, AWS, LangGraph, and more. [GitHub](https://github.com/ag-ui-protocol/ag-ui)
+
+### Additional Protocols
+
+- [ANP — Agent Network Protocol](https://github.com/agent-network-protocol/agent-network-protocol) — Full-stack decentralised agent protocol with DID identity and meta-protocol negotiation. Agents can dynamically create new communication protocols at runtime.
+- [AITP — Agent Interaction & Transaction Protocol](https://docs.near.ai/aitp/) — NEAR AI. Agent commerce and transactions with marketplace primitives. Thread-based conversations with typed message payloads.
+- [Agent Protocol](https://github.com/AI-Engineer-Foundation/agent-protocol) — AI Engineer Foundation. Minimal REST interface for agent testing and benchmarking. Simple, unopinionated.
+
+---
+
+## 💰 Payments & Commerce
+
+*How do agents pay for services and conduct transactions?*
+
+
+- [x402](https://www.x402.org/) — Coinbase. Internet-native payments via HTTP 402. USDC on Base L2. Designed for micropayments — agents pay per API call, per byte, per inference. 500K+ weekly transactions. [GitHub](https://github.com/coinbase/x402)
+- [AP2 — Agent Payments Protocol](https://ap2-protocol.org/) — Google + 60 organisations (PayPal, Mastercard, Visa). Open extension for A2A and MCP. Uses Verifiable Digital Credentials (VDCs) for cryptographic proof of purchase intent. Three mandate types: Intent (human-not-present authority), Cart (human-present authorisation), Payment (network signalling). [Spec](https://ap2-protocol.org/specification/) · [GitHub](https://github.com/google-agentic-commerce/AP2)
+- [MPP — Machine Payments Protocol](https://datatracker.ietf.org/doc/draft-ryan-httpauth-payment/) — Tempo Labs / Stripe. IETF HTTP Authentication Scheme for machine-to-machine payments. Payment-method agnostic. Uses HTTP 402 status code with `Payment` header.
+- [Visa Trusted Agent Protocol (TAP)](https://developer.visa.com/capabilities/trusted-agent-protocol) — Agent verification bridge between traditional card networks and crypto-native payments. x402 compatibility.
+
+---
+
+## 🛡️ Governance & Security
+
+*How do we control, monitor, and secure what agents do?*
+
+### Governance Frameworks
+
+- [Microsoft Agent Governance Toolkit](https://github.com/microsoft/agent-governance-toolkit) — Open-source (MIT). Seven packages: policy engine, execution rings, trust scoring, compliance mapping, MCP Security Scanner, DID + SPIFFE/SVID identity. Runtime security for agents.
+- [Google Secure AI Framework (SAIF) for Agents](https://services.google.com/fh/files/misc/secure_ai_framework_for_agents.pdf) — Hybrid defence-in-depth: deterministic policy engines + reasoning-based defences. Three principles: well-defined human controllers, limited powers, observable actions.
+- [ServiceNow AI Control Tower](https://www.servicenow.com/products/ai-control-tower.html) — Centralised hub for managing, monitoring, and governing any AI agent (internal or third-party). Part of ServiceNow's AI Agent Fabric with native A2A + MCP support.
+- [OWASP Top 10 for Agentic Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/llm-top-10-governance-doc/LLM_AI_Security_and_Governance_Checklist-v1.1.pdf) — Standardised risk taxonomy for agentic AI. Ten threat categories including goal hijacking, tool misuse, identity abuse, and supply chain compromise.
+
+### Observability & Evaluation
+
+- [Langfuse](https://langfuse.com/) — Open-source LLM observability. Acquired by ClickHouse (Jan 2026). 26M+ SDK monthly installs, 19 Fortune 50 clients. Tracing, evaluation, and monitoring for agent workflows.
+- [Portkey](https://portkey.ai/) — AI gateway with 10B+ monthly requests. 99.9999% uptime, sub-10ms latency. 40+ pre-built guardrails for agent safety.
+- [AgentOps](https://www.agentops.ai/) — Session replays and failure detection for AI agents. Two lines of code to start.
+- [Arize Phoenix](https://phoenix.arize.com/) — Open-source agent observability on OpenTelemetry. Framework-agnostic tracing and evaluation.
 
 ---
 
 ## Contributing
 
-Contributions welcome! Please read the [contributing guidelines](CONTRIBUTING.md) first.
+Contributions welcome! Please read the [contribution guidelines](CONTRIBUTING.md) before submitting a PR.
+
+If you know of a protocol, tool, or service that belongs on this list, please open an issue or submit a pull request.
 
 ## License
 
 [![CC0](https://licensebuttons.net/p/zero/1.0/88x31.png)](https://creativecommons.org/publicdomain/zero/1.0/)
+
+To the extent possible under law, the authors have waived all copyright and related or neighbouring rights to this work.
