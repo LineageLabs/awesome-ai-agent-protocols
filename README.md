@@ -88,6 +88,7 @@
 
 
 - [x402](https://www.x402.org/) — Coinbase. Internet-native payments via HTTP 402. USDC on Base L2. Designed for micropayments — agents pay per API call, per byte, per inference. 500K+ weekly transactions. [GitHub](https://github.com/coinbase/x402)
+  - [Colombia TRM](https://x402.lagaceta.net/trm) — Official Superintendencia Financiera daily USD/COP prepaid GET $0.005 USDC on Base. [Discovery](https://x402.lagaceta.net/.well-known/x402).
 - [AP2 — Agent Payments Protocol](https://ap2-protocol.org/) — Google + 60 organisations (PayPal, Mastercard, Visa). Open extension for A2A and MCP. Uses Verifiable Digital Credentials (VDCs) for cryptographic proof of purchase intent. Three mandate types: Intent (human-not-present authority), Cart (human-present authorisation), Payment (network signalling). [Spec](https://ap2-protocol.org/specification/) · [GitHub](https://github.com/google-agentic-commerce/AP2)
 - [MPP — Machine Payments Protocol](https://datatracker.ietf.org/doc/draft-ryan-httpauth-payment/) — Tempo Labs / Stripe. IETF HTTP Authentication Scheme for machine-to-machine payments. Payment-method agnostic. Uses HTTP 402 status code with `Payment` header.
 - [Visa Trusted Agent Protocol (TAP)](https://developer.visa.com/capabilities/trusted-agent-protocol) — Agent verification bridge between traditional card networks and crypto-native payments. x402 compatibility.
