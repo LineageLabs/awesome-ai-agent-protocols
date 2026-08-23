@@ -101,6 +101,7 @@
 ### Governance Frameworks
 
 - [Microsoft Agent Governance Toolkit](https://github.com/microsoft/agent-governance-toolkit) — Open-source (MIT). Seven packages: policy engine, execution rings, trust scoring, compliance mapping, MCP Security Scanner, DID + SPIFFE/SVID identity. Runtime security for agents.
+- [decision-os-min](https://github.com/Aliipou/decision-os-min) — Python execution-governance runtime: Ed25519-signed action-bound decisions, one-time capability spend, PEP that refuses unsigned effects; OPA/Cedar stay replaceable PDPs. PolyForm-Noncommercial-1.0.0.
 - [Google Secure AI Framework (SAIF) for Agents](https://services.google.com/fh/files/misc/secure_ai_framework_for_agents.pdf) — Hybrid defence-in-depth: deterministic policy engines + reasoning-based defences. Three principles: well-defined human controllers, limited powers, observable actions.
 - [ServiceNow AI Control Tower](https://www.servicenow.com/products/ai-control-tower.html) — Centralised hub for managing, monitoring, and governing any AI agent (internal or third-party). Part of ServiceNow's AI Agent Fabric with native A2A + MCP support.
 - [OWASP Top 10 for Agentic Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/llm-top-10-governance-doc/LLM_AI_Security_and_Governance_Checklist-v1.1.pdf) — Standardised risk taxonomy for agentic AI. Ten threat categories including goal hijacking, tool misuse, identity abuse, and supply chain compromise.
