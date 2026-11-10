@@ -43,6 +43,7 @@
 - [Web Bot Auth](https://developers.cloudflare.com/bots/reference/bot-verification/web-bot-auth/) — Cloudflare's cryptographic HTTP message signatures (IETF RFC 9421) for bot/agent identity. Ed25519 keys, `/.well-known/http-message-signatures-directory`. Production-deployed on the Verified Bots Program. [Rust](https://crates.io/crates/web-bot-auth) and [TypeScript](https://www.npmjs.com/package/web-bot-auth) libraries available.
 - [World AgentKit](https://docs.world.org/agents/agent-kit/integrate) — Extends x402 with proof-of-personhood verification for agents. Agents register on AgentBook (World Chain), verified via World App. Distinguishes human-backed agents from bots. `npm install @worldcoin/agentkit`.
 - [ANP Identity Layer](https://github.com/agent-network-protocol/agent-network-protocol) — Agent Network Protocol uses `did:wba` (DID method anchored to web domains). Decentralised agent identity without blockchain.
+- [Know Your Agent (KYA)](https://github.com/RishabhPande/know-your-agent) - Python reference implementation of Ed25519-signed, session-limited agent credentials with purchase scopes, attenuated delegation and revocation checks.
 
 ---
 
